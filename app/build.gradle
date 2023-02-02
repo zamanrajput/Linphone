@@ -236,6 +236,7 @@ dependencies {
     }
 
     implementation 'org.linphone:linphone-sdk-android:5.2+'
+    implementation 'com.github.licheedev.Android-SerialPort-API:serialport:1.0.1'
 
     // Only enable leak canary prior to release
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'

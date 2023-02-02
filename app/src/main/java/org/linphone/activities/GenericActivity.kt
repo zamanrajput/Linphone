@@ -25,6 +25,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Display
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
@@ -47,7 +48,11 @@ abstract class GenericActivity : AppCompatActivity() {
     val isDestructionPending: Boolean
         get() = _isDestructionPending
 
-    open fun onLayoutChanges(foldingFeature: FoldingFeature?) { }
+    open fun onLayoutChanges(foldingFeature: FoldingFeature?) {}
+
+    public fun showToast(string: String) {
+        Toast.makeText(applicationContext, string, Toast.LENGTH_SHORT).show()
+    }
 
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {

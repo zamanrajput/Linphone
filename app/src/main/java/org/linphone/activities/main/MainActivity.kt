@@ -60,6 +60,9 @@ import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.CorePreferences
 import org.linphone.core.tools.Log
 import org.linphone.databinding.MainActivityBinding
+import org.linphone.locker_src.models.AdminConfig
+import org.linphone.locker_src.src.LockApi.connectWithBoard
+import org.linphone.locker_src.src.MAppKotlin
 import org.linphone.utils.*
 
 class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestinationChangedListener {
@@ -150,6 +153,37 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
 
         tabsFragment = findViewById(R.id.tabs_fragment)
         statusFragment = findViewById(R.id.status_fragment)
+
+        val adminConfig = AdminConfig()
+        adminConfig.devicePortName = "/dev/ttyS4"
+        adminConfig.deviceID = "asdad"
+        adminConfig.baudRate = 9600
+
+        try {
+
+            connectWithBoard(adminConfig) {
+                showToast("Connection With Board:$it")
+            }
+
+            MAppKotlin.initCOM {
+                showToast(it)
+                if ("8201031191" == it.replace(" ", "")) {
+                    // locker 3 as Button Call
+                    coreContext.startCall("501")
+                } else if ("8201051197" == it.replace(" ", "")) {
+                    // locker 4 as Button Yes
+                    showToast("Yes")
+                } else if ("8201041196" == it.replace(" ", "")) {
+                    // locker 4 as Button No
+                    showToast("No")
+                } else {
+                    showToast("Invalid")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast(e.message.toString())
+        }
 
         binding.root.doOnAttach {
             Log.i("[Main Activity] Report UI has been fully drawn (TTFD)")
